@@ -5,29 +5,61 @@
 </head>
 <body>
     <h1>My ToDo List</h1>
-    <form action="/add" method="post">
+    <button onclick="applyFilter('all')" {% if current_filter == 'all' %}disabled{% endif %}>All</button>
+    <button onclick="applyFilter('active')" {% if current_filter == 'active' %}disabled{% endif %}>Uncompleted</button>
+    <button onclick="applyFilter('completed')" {% if current_filter == 'completed' %}disabled{% endif %}>Completed</button>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/tasks.js') }}"></script>
+
+
+    <form action="/add" method="post" style="display:inline;">
+        <select name="category">
+            <option value="">--Select Category--</option>
+            <option value="Work">Work</option>
+            <option value="Personal">Personal</option>
+            <option value="Grocery's">Grocery's</option>
+            <option value="Shopping">Shopping</option>
+        </select>
         <input type="text" name="task" placeholder="Enter a new task" required>
-        <input type="date" name="due_date" placeholder="Enter due date" required>
+        <input type="date" name="due_date" placeholder="Enter due date" required min="{{current_today}}">
         <button type="submit">Add Task</button>
+    </form>
+    <form action="/clear" style="display:inline; margin-left:10px;">
+        <button type="submit">Clear All Tasks</button>
     </form>
 
     <div>  
-        <ul>
-            {% for index,task in tasks %}
-                <li>
-                    {{ task.item }} | Due: {{ task.due_date }}
-                    {% if task.completed %}
-                        ✔ 
-                    {% endif %}
-                    <a href="/complete/{{ index}}">Mark Completed</a>
-                    <a href="/delete/{{ index }}">Delete</a>
-                </li>
-            {% endfor %}
-        </ul>
+        {% for category, tasks in categorized_tasks.items() %}
+            <h2>{{ category }}</h2>
+            <ul>
+                {% for task in tasks %}
+                    <li style="margin-bottom:10px;">
+                        {{ task.title }} | Due: {{ task.due_date }}
+                        
+                        <!-- Mark Completed -->
+                        <!-- Mark Completed -->
+                        {% if not task.completed %}
+                            <form action="{{ url_for('complete_task', task_id=task.id) }}" method="post" style="display:inline;">
+                                <button type="submit" style="background:none;border:none;color:blue;cursor:pointer;">
+                                    Mark Completed
+                                </button>
+                            </form>
+                        {% else %}
+                            <span style="color:green; font-weight:bold;">✔ </span>
+                        {% endif %}
+
+                        <!-- Delete Task -->
+                        <form action="/delete_task/{{task.id}}" method="post" style="display:inline; margin-left:5px;">
+                            <button type="submit" 
+                                    onclick="return confirm('Are you sure you want to delete this task?');"
+                                    style="background:none; border:none; color:red; cursor:pointer;">
+                                Delete
+                            </button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
     </div>  
-    
-    <form action="/clear">
-        <button type="submit">Clear All Tasks</button>
-    </form>
+
 </body>
 </html>
