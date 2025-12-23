@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>To-Do List</title>
+</head>
+<body>
+    <h1>My ToDo List</h1>
+    <form action="/add" method="post">
+        <input type="text" name="task" placeholder="Enter a new task" required>
+        <input type="date" name="due_date" placeholder="Enter due date" required>
+        <button type="submit">Add Task</button>
+    </form>
+
+    <div>  
+        <ul>
+            {% for index,task in tasks %}
+                <li>
+                    {{ task.item }} | Due: {{ task.due_date }}
+                    {% if task.completed %}
+                        ✔ 
+                    {% endif %}
+                    <a href="/complete/{{ index}}">Mark Completed</a>
+                    <a href="/delete/{{ index }}">Delete</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>  
+    
+    <form action="/clear">
+        <button type="submit">Clear All Tasks</button>
+    </form>
+</body>
+</html>
