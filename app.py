@@ -128,7 +128,8 @@ def upload_file(task_id):
         )
 
         task = Task.query.get(task_id)
-        task.file_name = filename
+        task.file_name = task.file_name = f"https://{S3_BUCKET}.s3.{S3_REGION}.amazonaws.com/{filename}"
+
         db.session.commit()
 
         return redirect("/")
