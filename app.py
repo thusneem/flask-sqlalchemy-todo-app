@@ -5,15 +5,22 @@ from datetime import datetime, date
 from collections import defaultdict
 
 from flask import Flask, request, redirect, render_template
-from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required
-from ldap import init_ldap
+from urllib.parse import quote_plus
 
 app = Flask(__name__)
 app.secret_key = "secret-key"
 basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'tasks.db')
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'tasks.db')
+password = quote_plus("a1b2c3d4#2026")
 
-#app.config['SQLALCHEMY_DATABASE_URI'] ='sqlite:///tasks.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+    f"mysql+pymysql://admin:{password}"
+    "@database-2.c8hs0muek7oi.us-east-1.rds.amazonaws.com:3306/tasks"
+)
+
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+#app.config['SQLALCHEMY_DATABASE_URI'] ='mysql+pymysql://admin:{a1b2c3d4#2026}@database-2.c8hs0muek7oi.us-east-1.rds.amazonaws.com:3306/tasks'
 
 db =SQLAlchemy(app)
 
@@ -90,4 +97,4 @@ def clear_task():
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    app.run(debug=True)    
+    app.run(host="0.0.0.0",port=5000,debug=True)    
