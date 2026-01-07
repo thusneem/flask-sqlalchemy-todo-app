@@ -7,6 +7,8 @@ from collections import defaultdict
 from flask import Flask, request, redirect, render_template
 from urllib.parse import quote_plus
 
+
+
 app = Flask(__name__)
 app.secret_key = "secret-key"
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -31,7 +33,7 @@ class Task(db.Model):
     due_date = db.Column(db.Date, default=date.today)
     completed = db.Column(db.Boolean,default=False)
     category = db.Column(db.String(50), nullable=True)
-     
+        
 @app.route('/')
 def home():
     filter_type = request.args.get("filter", "all")
@@ -60,7 +62,7 @@ def home():
         current_today=today,
         current_filter=filter_type
     )
-
+@app.route('/add',methods=["POST"])
 def add_task():
     task = request.form.get('task')
     due_date = request.form.get('due_date')
