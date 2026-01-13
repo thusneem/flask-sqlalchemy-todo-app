@@ -127,7 +127,8 @@ def upload_task():
             file,
             S3_BUCKET,
             filename,
-            ExtraArgs={"ContentType": file.content_type}
+            ExtraArgs={"ContentType": file.content_type,
+                        "ACL": "public-read"}
         )
 
         file_url = f"https://{S3_BUCKET}.s3.{S3_REGION}.amazonaws.com/{filename}"
@@ -148,6 +149,7 @@ def upload_task():
 
     except Exception as e:
         return str(e), 500
+
 
 
 if __name__ == '__main__':
