@@ -5,7 +5,7 @@ from datetime import datetime, date
 from collections import defaultdict
 
 from flask import Flask, request, redirect, render_template
-from urllib.parse import quote_plus
+import json
 
 import boto3
 from werkzeug.utils import secure_filename
@@ -23,16 +23,22 @@ s3 = boto3.client("s3", region_name=S3_REGION)
 app.secret_key = "secret-key"
 basedir = os.path.abspath(os.path.dirname(__file__))
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'tasks.db')
-password = quote_plus("a1b2c3d4#2026")
 
-app.config['SQLALCHEMY_DATABASE_URI'] = (
-    f"mysql+pymysql://admin:{password}"
-    "@database-2.c8hs0muek7oi.us-east-1.rds.amazonaws.com:3306/tasks"
-)
+
+
+def my_secrets(secrect_name,region):
+    client = boto3.client("secretsmanager", region_name=region)
+    response = client.get_secret_value(SecretId=secrect_name)
+    return json.loads(response["SecretString"])
+
+
+secret = my_secrets( secrect_name="prod/rds/todo",region="us-east-1")
+
+
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-#app.config['SQLALCHEMY_DATABASE_URI'] ='mysql+pymysql://admin:{a1b2c3d4#2026}@database-2.c8hs0muek7oi.us-east-1.rds.amazonaws.com:3306/tasks'
+app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{secret['username']}:{secret['password']}@{secret['host']}/{secret['dbname']}"
 
 db =SQLAlchemy(app)
 
@@ -127,8 +133,7 @@ def upload_task():
             file,
             S3_BUCKET,
             filename,
-            ExtraArgs={"ContentType": file.content_type,
-                        "ACL": "public-read"}
+            ExtraArgs={"ContentType": file.content_type}
         )
 
         file_url = f"https://{S3_BUCKET}.s3.{S3_REGION}.amazonaws.com/{filename}"
