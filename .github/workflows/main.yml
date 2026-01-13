@@ -36,6 +36,7 @@ jobs:
         script: |
           cd /home/thusneem/flask-sqlalchemy-todo-app
           source venv/bin/activate
-          python3 app.py
+          pkill python3 || true
+          nohup python3 app.py &
 
 
