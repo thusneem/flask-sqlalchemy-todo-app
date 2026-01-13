@@ -51,7 +51,7 @@ class Task(db.Model):
     category = db.Column(db.String(50), nullable=True)
     file_name = db.Column(db.String(255), nullable=True)
 
-        
+#Home Route   
 @app.route('/')
 def home():
     filter_type = request.args.get("filter", "all")
@@ -80,6 +80,7 @@ def home():
         current_today=today,
         current_filter=filter_type
     )
+# Add Task Route
 @app.route('/add',methods=["POST"])
 def add_task():
     task = request.form.get('task')
@@ -91,7 +92,7 @@ def add_task():
     db.session.add(new_task)
     db.session.commit()
     return redirect('/')
-
+# Delete Task Route
 @app.route('/delete_task/<int:task_id>', methods=['POST', 'GET'])
 def delete_task(task_id):
     task = Task.query.get(task_id)
@@ -99,7 +100,7 @@ def delete_task(task_id):
     db.session.commit()
     return redirect('/')
 
-
+# Mark Task Completed Task Route
 @app.route('/complete_task/<int:task_id>', methods=['GET','POST'])
 def complete_task(task_id):
     task = Task.query.get(task_id)
@@ -107,12 +108,14 @@ def complete_task(task_id):
     db.session.commit()
     return redirect('/')
 
+# Clear Task Route
 @app.route('/clear/')
 def clear_task():
     Task.query.delete()
     db.session.commit()
     return redirect('/')
 
+# Upload File Task Route
 @app.route("/upload_task", methods=["POST"])
 def upload_task():
     if "file" not in request.files:
