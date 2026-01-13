@@ -1,0 +1,134 @@
+/* ---------- General Styles ---------- */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #2c3e50;
+}
+
+/* ---------- Buttons ---------- */
+button {
+    padding: 6px 12px;
+    margin: 2px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Filter Buttons */
+button[onclick*="applyFilter"] {
+    background-color: #3498db;
+    color: #fff;
+}
+
+button[onclick*="applyFilter"]:hover:not(:disabled) {
+    background-color: #2980b9;
+}
+
+/* Upload Button */
+form[action="/upload_task"] button {
+    background-color: #2ecc71;
+    color: #fff;
+}
+
+form[action="/upload_task"] button:hover {
+    background-color: #27ae60;
+}
+
+/* Clear All Button */
+form[action="/clear"] button {
+    background-color: #e74c3c;
+    color: #fff;
+}
+
+form[action="/clear"] button:hover {
+    background-color: #c0392b;
+}
+
+/* ---------- Form Inputs ---------- */
+input[type="text"], input[type="date"], select {
+    padding: 5px 8px;
+    margin-right: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+/* ---------- Task List ---------- */
+ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+li {
+    background-color: #fff;
+    margin-bottom: 10px;
+    padding: 10px 15px;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+/* Completed tasks */
+li.completed {
+    text-decoration: line-through;
+    color: #95a5a6;
+}
+
+/* File link */
+a {
+    margin-left: 10px;
+    color: #e67e22;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Mark Completed / Delete buttons inside task */
+li form button {
+    background: none;
+    border: none;
+    color: #3498db;
+    cursor: pointer;
+}
+
+li form button:hover {
+    text-decoration: underline;
+}
+
+/* ---------- Responsive Design ---------- */
+@media screen and (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
+    li {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    li form {
+        margin-top: 5px;
+    }
+
+    input[type="text"], input[type="date"], select, button {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+}
