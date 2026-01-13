@@ -23,7 +23,12 @@
         <input type="date" name="due_date" placeholder="Enter due date" required min="{{current_today}}">
         <button type="submit">Add Task</button>
     </form>
-   
+    <!-- File Upload -->
+    <form action="/upload/{{ task.id }}" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <button type="submit">Upload</button>
+    </form>
+
     <form action="/clear" style="display:inline; margin-left:10px;">
         <button type="submit">Clear All Tasks</button>
     </form>
@@ -34,15 +39,13 @@
             <ul>
                 {% for task in tasks %}
 
-                     <form action="/upload/{{ task.id }}" method="post" enctype="multipart/form-data">
-                        <input type="file" name="file" required>
-                        <button type="submit">Upload</button>
-                    </form>
-                    
                     <li style="margin-bottom:10px;">
                         {{ task.title }} | Due: {{ task.due_date }}
+
+                        {% if task.file_name %}
+                            <a href="{{ task.file_name }}" target="_blank"> 📎 View File</a>
+                        {% endif %}
                         
-                        <!-- Mark Completed -->
                         <!-- Mark Completed -->
                         {% if not task.completed %}
                             <form action="{{ url_for('complete_task', task_id=task.id) }}" method="post" style="display:inline;">

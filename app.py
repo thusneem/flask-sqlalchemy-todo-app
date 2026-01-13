@@ -107,12 +107,14 @@ def clear_task():
     db.session.commit()
     return redirect('/')
 
-@app.route("/upload/<int:task_id>", methods=["POST"])
-def upload_file(task_id):
+@app.route("/upload_task", methods=["POST"])
+def upload_task():
     if "file" not in request.files:
         return "No file part", 400
 
     file = request.files["file"]
+    category = request.form.get("category")
+    due_date = request.form.get("due_date")
 
     if file.filename == "":
         return "No selected file", 400
@@ -120,6 +122,7 @@ def upload_file(task_id):
     filename = secure_filename(file.filename)
 
     try:
+        # Upload to S3
         s3.upload_fileobj(
             file,
             S3_BUCKET,
@@ -127,9 +130,18 @@ def upload_file(task_id):
             ExtraArgs={"ContentType": file.content_type}
         )
 
-        task = Task.query.get(task_id)
-        task.file_name = task.file_name = f"https://{S3_BUCKET}.s3.{S3_REGION}.amazonaws.com/{filename}"
+        file_url = f"https://{S3_BUCKET}.s3.{S3_REGION}.amazonaws.com/{filename}"
 
+        # Create NEW task
+        new_task = Task(
+            title=filename,          # file name as task title
+            category=category,
+            due_date=due_date,
+            completed=False,
+            file_name=file_url
+        )
+
+        db.session.add(new_task)
         db.session.commit()
 
         return redirect("/")
@@ -137,7 +149,6 @@ def upload_file(task_id):
     except Exception as e:
         return str(e), 500
 
-    
 
 if __name__ == '__main__':
     with app.app_context():
