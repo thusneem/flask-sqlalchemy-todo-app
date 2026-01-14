@@ -4,7 +4,7 @@ import os
 from datetime import datetime, date
 from collections import defaultdict
 
-from flask import Flask, request, redirect, render_template
+from flask import Flask, request, redirect, render_template, session
 import json
 
 import boto3
@@ -54,6 +54,9 @@ class Task(db.Model):
 #Home Route   
 @app.route('/')
 def home():
+    if "user" not in session:
+        return redirect("/login") 
+    
     filter_type = request.args.get("filter", "all")
 
     query = Task.query
@@ -80,6 +83,23 @@ def home():
         current_today=today,
         current_filter=filter_type
     )
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        data = request.get_json() or request.form
+        username = data.get("username")
+        password = data.get("password")
+
+        if username == "admin" and password == "1234":
+            session["user"] = username  
+            return redirect("/")
+
+        return render_template("login.html", error="Invalid credentials")
+
+    # GET request → show login page
+    return render_template("login.html")
+
 # Add Task Route
 @app.route('/add',methods=["POST"])
 def add_task():
