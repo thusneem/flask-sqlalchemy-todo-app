@@ -72,6 +72,13 @@
             </ul>
         {% endfor %}
     </div>  
+    <script>
+    // Log category when selected
+    document.querySelector('select[name="category"]')
+        ?.addEventListener('change', function () {
+            console.log("Selected category:", this.value);
+        });
+    </script>
 
 </body>
 </html>
