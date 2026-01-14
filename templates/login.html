@@ -5,15 +5,14 @@
 </head>
 <body>
     <h1>My ToDo List</h1>
-    <form action="/add" method="post" style="display:inline;">
+    <form id="loginForm" method="post" action="/login">
         <input type="text" name="username" placeholder="Enter username" required>
-        <input type="text" name="password" placeholder="Enter password" required min="{{current_today}}">
+        <input type="password" name="password" placeholder="Enter password" required>
         <button type="submit">Log In</button>
     </form>
 
-    <p id="error" style="color:red;"></p>
-
-    <!--<script src="{{ url_for('static', filename='js/auth.js') }}"></script> -->
-    <script type="text/javascript" src="static/js/auth.js"></script>
+    {% if error %}
+    <p style="color:red;">{{ error }}</p>
+    {% endif %}
 </body>
 </html>
