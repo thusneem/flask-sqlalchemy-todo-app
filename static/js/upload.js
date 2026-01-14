@@ -1,13 +1,10 @@
 
-const select = document.getElementById("category");
-const hidden = document.getElementById("selectedCategory");
+const categorySelect = document.querySelector('select[name="category"]');
+const hiddenCategory = document.getElementById("selectedCategory");
 
-select.addEventListener("change", () => {
-    hidden.value = select.value;
-    console.log("Category set to:", hidden.value);
-});
-
-document.getElementById("uploadForm").addEventListener("submit", function () {
-    console.log("Submitting category:", hidden.value);
-});
-
+if (categorySelect && hiddenCategory) {
+    categorySelect.addEventListener("change", function () {
+        hiddenCategory.value = this.value;
+        console.log("Hidden category set to:", hiddenCategory.value);
+    });
+}

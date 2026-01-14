@@ -2,6 +2,10 @@
 <html>
 <head>
     <title>To-Do List</title>
+    <form action="{{ url_for('logout') }}" method="post" style="float:right;">
+        <button type="submit">Logout</button>
+    </form>
+
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
@@ -13,7 +17,7 @@
     <script type="text/javascript" src="{{ url_for('static', filename='js/upload.js') }}"></script>
 
 
-    <form action="/add" method="post" style="display:inline;" id=category>
+    <form action="/add" method="post" style="display:inline;" id=getCategory>
         <select name="category">
             <option value="">--Select Category--</option>
             <option value="Work">Work</option>

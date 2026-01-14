@@ -11,8 +11,6 @@ import boto3
 from werkzeug.utils import secure_filename
 
 
-
-
 app = Flask(__name__)
 
 S3_BUCKET = "to-do-file-upload-jan-2026"
@@ -71,7 +69,7 @@ def home():
 
     categorized_tasks = defaultdict(list)
     for task in tasks:
-        category = task.category if task.category else "Uncategorized"
+        category = task.category if task.category else "Files"
         categorized_tasks[category].append(task)
 
     today = date.today().strftime("%Y-%m-%d")
@@ -176,7 +174,11 @@ def upload_task():
 
     except Exception as e:
         return str(e), 500
-
+    
+@app.route("/logout", methods=["POST"])
+def logout():
+    session.clear()  
+    return redirect("/login")
 
 
 if __name__ == '__main__':
