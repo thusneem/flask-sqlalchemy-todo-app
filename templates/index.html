@@ -10,9 +10,10 @@
     <button onclick="applyFilter('active')" {% if current_filter == 'active' %}disabled{% endif %}>Uncompleted</button>
     <button onclick="applyFilter('completed')" {% if current_filter == 'completed' %}disabled{% endif %}>Completed</button>
     <script type="text/javascript" src="{{ url_for('static', filename='js/tasks.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/upload.js') }}"></script>
 
 
-    <form action="/add" method="post" style="display:inline;">
+    <form action="/add" method="post" style="display:inline;" id=category>
         <select name="category">
             <option value="">--Select Category--</option>
             <option value="Work">Work</option>
@@ -30,7 +31,7 @@
     </form>
     <!-- File Upload -->
     <form action="/upload_task" method="post" enctype="multipart/form-data">
-        <input type="hidden" name="category" value="{{ selected_category }}">
+        <input type="hidden" name="category" id="selectedCategory">
         <input type="file" name="file" required>
         <button type="submit">Upload</button>
     </form>

@@ -164,7 +164,7 @@ def upload_task():
         new_task = Task(
             title=filename,          # file name as task title
             category=category,
-            due_date=due_date,
+            due_date=date.today(),
             completed=False,
             file_name=file_url
         )
