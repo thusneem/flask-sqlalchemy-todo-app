@@ -37,13 +37,29 @@ button[onclick*="applyFilter"]:hover:not(:disabled) {
     background-color: #2980b9;
 }
 
+/* add Button */
+form[action="/add_task"] button {
+    background-color: #3498db;
+    color: #fff;
+}
+
+form[action="/add_task"] button {
+    background-color: #2980b9;
+    color: #fff;
+}
 /* Upload Button */
 form[action="/upload_task"] button {
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
     background-color: #2ecc71;
     color: #fff;
 }
 
 form[action="/upload_task"] button:hover {
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
     background-color: #27ae60;
 }
 

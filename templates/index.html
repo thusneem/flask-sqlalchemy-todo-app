@@ -24,14 +24,14 @@
         <input type="date" name="due_date" placeholder="Enter due date" required min="{{current_today}}">
         <button type="submit">Add Task</button>
     </form>
+
+    <form action="/clear" style="display:inline; margin-left:10px;">
+        <button type="submit">Clear All Tasks</button>
+    </form>
     <!-- File Upload -->
     <form action="/upload_task" method="post" enctype="multipart/form-data">
         <input type="file" name="file" required>
         <button type="submit">Upload</button>
-    </form>
-
-    <form action="/clear" style="display:inline; margin-left:10px;">
-        <button type="submit">Clear All Tasks</button>
     </form>
 
     <div>  
