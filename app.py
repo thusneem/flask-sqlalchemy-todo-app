@@ -87,9 +87,8 @@ def home():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        data = request.get_json() or request.form
-        username = data.get("username")
-        password = data.get("password")
+        username = request.form.get("username")
+        password = request.form.get("password")
 
         if username == "admin" and password == "1234":
             session["user"] = username  
